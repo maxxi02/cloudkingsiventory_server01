@@ -1,0 +1,20 @@
+2025-04-02 20:24:37 [INFO]: Login attempt for email: m44156529@gmail.com
+2025-04-02 20:24:37 [WARN]: Login failed: Invalid password for email: m44156529@gmail.com
+2025-04-02 20:25:27 [INFO]: Login attempt for email: m44156529@gmail.com
+2025-04-02 20:25:27 [WARN]: Login failed: Invalid password for email: m44156529@gmail.com
+2025-04-02 20:26:41 [INFO]: Login attempt for email: m44156529@gmail.com
+2025-04-02 20:26:41 [INFO]: Creating session for user ID: 67e9234cb8a8cd3297e6278f
+2025-04-02 20:26:41 [INFO]: Signing tokens for user ID: 67e9234cb8a8cd3297e6278f
+2025-04-02 20:26:41 [INFO]: Login successful for user ID: 67e9234cb8a8cd3297e6278f with sessionId of 67ed2d0175e66025c1d36f2c
+2025-04-02 20:33:59 [INFO]: Login attempt for email: m44156529@gmail.com
+2025-04-02 20:33:59 [INFO]: Creating session for user ID: 67e9234cb8a8cd3297e6278f
+2025-04-02 20:33:59 [INFO]: Signing tokens for user ID: 67e9234cb8a8cd3297e6278f
+2025-04-02 20:33:59 [INFO]: Login successful for user ID: 67e9234cb8a8cd3297e6278f with sessionId of 67ed2eb775e66025c1d36f30
+2025-04-02 20:49:21 [INFO]: Login attempt for email: m44156529@gmail.com
+2025-04-02 20:49:21 [INFO]: Creating session for user ID: 67ed2f5875e66025c1d36f34
+2025-04-02 20:49:21 [INFO]: Signing tokens for user ID: 67ed2f5875e66025c1d36f34
+2025-04-02 20:49:21 [INFO]: Login successful for user ID: 67ed2f5875e66025c1d36f34 with sessionId of 67ed325175e66025c1d36f3f
+2025-04-02 21:38:59 [INFO]: Login attempt for email: m44156529@gmail.com
+2025-04-02 21:39:00 [INFO]: Creating session for user ID: 67ed2f5875e66025c1d36f34
+2025-04-02 21:39:00 [INFO]: Signing tokens for user ID: 67ed2f5875e66025c1d36f34
+2025-04-02 21:39:00 [INFO]: Login successful for user ID: 67ed2f5875e66025c1d36f34 with sessionId of 67ed3df40a0fa9b29cda2cdf
