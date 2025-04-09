@@ -8,6 +8,7 @@ import passport, { PassportStatic } from 'passport';
 import { userService } from '../../modules/user/user.module';
 import { UnauthorizedException } from '../utils/catch-error';
 import SessionModel from '../../database/models/session.model';
+import express from 'express';
 
 interface JwtPayload {
   userId: string;
@@ -39,23 +40,26 @@ const options: StrategyOptionsWithRequest = {
 export const setupJwtStrategy = (passport: PassportStatic) => {
   passport.use(
     'jwt',
-    new JwtStrategy(options, async (req, payload: JwtPayload, done) => {
-      try {
-        const user = await userService.findUserById(payload.userId);
-        const session = await SessionModel.findById(payload.sessionId);
-        if (!user) {
-          return done(null, false);
+    new JwtStrategy(
+      options,
+      async (req: express.Request, payload: JwtPayload, done) => {
+        try {
+          const user = await userService.findUserById(payload.userId);
+          const session = await SessionModel.findById(payload.sessionId);
+          if (!user) {
+            return done(null, false);
+          }
+          if (!session) {
+            return done(null, false);
+          }
+          req.sessionId = payload.sessionId;
+          req.id = payload.userId;
+          return done(null, user);
+        } catch (error) {
+          return done(error, false);
         }
-        if (!session) {
-          return done(null, false);
-        }
-        req.sessionId = payload.sessionId;
-        req.id = payload.userId;
-        return done(null, user);
-      } catch (error) {
-        return done(error, false);
-      }
-    }),
+      },
+    ),
   );
 };
 

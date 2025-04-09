@@ -8,6 +8,7 @@ declare global {
       id?: string;
     }
     interface Request {
+      id?: string;
       sessionId?: string;
     }
   }

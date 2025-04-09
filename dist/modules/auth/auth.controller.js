@@ -82,7 +82,7 @@ class AuthController {
             });
         });
         this.logout = (0, asyncHandler_1.asyncHandler)(async (req, res) => {
-            const sessionId = req.session?.id;
+            const sessionId = req.sessionId;
             if (sessionId) {
                 await this.authService.logout(sessionId);
             }

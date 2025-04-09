@@ -133,7 +133,7 @@ export class AuthController {
 
   public logout = asyncHandler(
     async (req: Request, res: Response): Promise<any> => {
-      const sessionId = req.session?.id;
+      const sessionId = req.sessionId;
       if (sessionId) {
         await this.authService.logout(sessionId);
       }
