@@ -1,9 +1,10 @@
+import { Request, Response } from 'express';
 import { SessionService } from './session.service';
 import { HTTPSTATUS } from '../../config/http.config';
 import { z } from 'zod';
 import { asyncHandler } from '../../middleware/asyncHandler';
 import { NotFoundException } from '../../common/utils/catch-error';
-import { Request, Response } from 'express';
+
 export class SessionController {
   private sessionService: SessionService;
 
@@ -12,13 +13,12 @@ export class SessionController {
   }
 
   public getAllSession = asyncHandler(async (req: Request, res: Response) => {
-    const userId = (req.user as any).id;
-
-    const sessionId = req.sessionID;
-
-    const { sessions } = await this.sessionService.getAllSession(
-      z.string().parse(userId),
-    );
+    const userId = req.user?.id;
+    const sessionId = req.sessionId;
+    if (!userId) {
+      throw new NotFoundException('User ID not found. Please log in.');
+    }
+    const { sessions } = await this.sessionService.getAllSession(userId);
 
     const modifySessions = sessions.map((session) => ({
       ...session.toObject(),
@@ -34,7 +34,7 @@ export class SessionController {
   });
 
   public getSession = asyncHandler(async (req: Request, res: Response) => {
-    const sessionId = req?.sessionID;
+    const sessionId = req?.sessionId;
 
     if (!sessionId) {
       throw new NotFoundException('Session ID not found. Please log in.');
@@ -50,7 +50,10 @@ export class SessionController {
 
   public deleteSession = asyncHandler(async (req: Request, res: Response) => {
     const sessionId = z.string().parse(req.params.id);
-    const userId = z.string().parse((req.user as any).id);
+    const userId = req.user?.id;
+    if (!userId) {
+      throw new NotFoundException('User ID not found. Please log in.');
+    }
     await this.sessionService.deleteSession(sessionId, userId);
 
     return res.status(HTTPSTATUS.OK_BABY).json({
