@@ -1,13 +1,9 @@
 import { SessionService } from './session.service';
-import { asyncHandler } from '../../middleware/asyncHandler';
-import {
-  NotFoundException,
-  UnauthorizedException,
-} from '../../common/utils/catch-error';
 import { HTTPSTATUS } from '../../config/http.config';
-import { Request, Response } from 'express';
 import { z } from 'zod';
-
+import { asyncHandler } from '../../middleware/asyncHandler';
+import { NotFoundException } from '../../common/utils/catch-error';
+import { Request, Response } from 'express';
 export class SessionController {
   private sessionService: SessionService;
 
@@ -15,60 +11,50 @@ export class SessionController {
     this.sessionService = sessionService;
   }
 
-  public getAllSession = asyncHandler(
-    async (req: Request, res: Response): Promise<any> => {
-      const userId = req.user?.id;
-      const sessionId = req.sessionId;
-      console.log(userId);
-      if (!userId) {
-        throw new UnauthorizedException('User not authenticated');
-      }
-      const { sessions } = await this.sessionService.getAllSession(userId);
-      const modifySessions = sessions.map((session) => ({
-        ...session.toObject(),
-        ...(session.id === sessionId && { isCurrent: true }),
-      }));
+  public getAllSession = asyncHandler(async (req: Request, res: Response) => {
+    const userId = (req.user as any).id;
 
-      return res.status(HTTPSTATUS.OK_BABY).json({
-        message: 'Retrieved all session successfully',
-        sessions: modifySessions,
-      });
-    },
-  );
-  public getSession = asyncHandler(
-    async (req: Request, res: Response): Promise<any> => {
-      const sessionId = req.sessionId;
-      if (!sessionId) {
-        throw new UnauthorizedException('Session not authenticated');
-      }
-      const { user } = await this.sessionService.getSession(sessionId);
-      return res.status(HTTPSTATUS.OK_BABY).json({
-        message: 'Retrieved session successfully',
-        user,
-      });
-    },
-  );
-  public deleteSession = asyncHandler(
-    async (req: Request, res: Response): Promise<any> => {
-      try {
-        const sessionId = z.string().parse(req.params.id);
-        const userId = req.user?.id;
-        if (!userId) {
-          throw new NotFoundException('UserId not found');
-        }
-        const session = await this.sessionService.deleteSession(
-          sessionId,
-          userId,
-        );
+    const sessionId = req.sessionID;
 
-        return res.status(HTTPSTATUS.OK_BABY).json({
-          message: 'Session remove successfully',
-          session,
-        });
-      } catch (error) {
-        console.log('Error deleting session:', error);
-        throw new NotFoundException('Session not found');
-      }
-    },
-  );
+    const { sessions } = await this.sessionService.getAllSession(
+      z.string().parse(userId),
+    );
+
+    const modifySessions = sessions.map((session) => ({
+      ...session.toObject(),
+      ...(session.id === sessionId && {
+        isCurrent: true,
+      }),
+    }));
+
+    return res.status(HTTPSTATUS.OK_BABY).json({
+      message: 'Retrieved all session successfully',
+      sessions: modifySessions,
+    });
+  });
+
+  public getSession = asyncHandler(async (req: Request, res: Response) => {
+    const sessionId = req?.sessionID;
+
+    if (!sessionId) {
+      throw new NotFoundException('Session ID not found. Please log in.');
+    }
+
+    const { user } = await this.sessionService.getSessionById(sessionId);
+
+    return res.status(HTTPSTATUS.OK_BABY).json({
+      message: 'Session retrieved successfully',
+      user,
+    });
+  });
+
+  public deleteSession = asyncHandler(async (req: Request, res: Response) => {
+    const sessionId = z.string().parse(req.params.id);
+    const userId = z.string().parse((req.user as any).id);
+    await this.sessionService.deleteSession(sessionId, userId);
+
+    return res.status(HTTPSTATUS.OK_BABY).json({
+      message: 'Session remove successfully',
+    });
+  });
 }

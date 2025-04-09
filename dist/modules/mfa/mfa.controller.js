@@ -9,7 +9,7 @@ const cookie_1 = require("../../common/utils/cookie");
 class MfaController {
     constructor(mfaService) {
         this.generateMFASetup = (0, asyncHandler_1.asyncHandler)(async (req, res) => {
-            const userId = req.user?.id;
+            const userId = req.user.id;
             if (!userId) {
                 throw new catch_error_1.UnauthorizedException('User not authenticated');
             }
@@ -17,7 +17,7 @@ class MfaController {
             res.status(http_config_1.HTTPSTATUS.OK_BABY).json({ message, secret, qrImageUrl });
         });
         this.verifyMFASetup = (0, asyncHandler_1.asyncHandler)(async (req, res) => {
-            const userId = req.user?.id;
+            const userId = req.user.id;
             if (!userId) {
                 throw new catch_error_1.UnauthorizedException('User not authorized.');
             }
@@ -26,7 +26,7 @@ class MfaController {
             return res.status(http_config_1.HTTPSTATUS.OK_BABY).json(result);
         });
         this.revokeMFASetup = (0, asyncHandler_1.asyncHandler)(async (req, res) => {
-            const userId = req.user?.id;
+            const userId = req.user.id;
             if (!userId) {
                 throw new catch_error_1.UnauthorizedException('User not authorized');
             }

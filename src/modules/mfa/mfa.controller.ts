@@ -8,7 +8,6 @@ import {
   verifyMfaSchema,
 } from '../../common/validators/mfa.validator';
 import { setAuthenticationCookies } from '../../common/utils/cookie';
-import { logger } from '../../common/utils/logger';
 
 export class MfaController {
   private mfaService: MfaService;
@@ -19,7 +18,7 @@ export class MfaController {
 
   public generateMFASetup = asyncHandler(
     async (req: Request, res: Response) => {
-      const userId = req.user?.id;
+      const userId = (req.user as any).id;
       if (!userId) {
         throw new UnauthorizedException('User not authenticated');
       }
@@ -31,7 +30,7 @@ export class MfaController {
   );
 
   public verifyMFASetup = asyncHandler(async (req: Request, res: Response) => {
-    const userId = req.user?.id;
+    const userId = (req.user as any).id;
     if (!userId) {
       throw new UnauthorizedException('User not authorized.');
     }
@@ -46,7 +45,7 @@ export class MfaController {
   });
 
   public revokeMFASetup = asyncHandler(async (req: Request, res: Response) => {
-    const userId = req.user?.id;
+    const userId = (req.user as any).id;
     if (!userId) {
       throw new UnauthorizedException('User not authorized');
     }

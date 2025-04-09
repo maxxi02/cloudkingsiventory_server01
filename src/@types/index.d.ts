@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { UserDocument } from '../database/models/user.model';
 import { Request } from 'express';
 

@@ -18,11 +18,15 @@ class SessionService {
             createdAt: 1,
             expiredAt: 1,
         }, {
-            sort: { createdAt: -1 },
+            sort: {
+                createdAt: -1,
+            },
         });
-        return { sessions };
+        return {
+            sessions,
+        };
     }
-    async getSession(sessionId) {
+    async getSessionById(sessionId) {
         const session = await session_model_1.default.findById(sessionId)
             .populate('userId')
             .select('-expiresAt');
@@ -30,14 +34,16 @@ class SessionService {
             throw new catch_error_1.NotFoundException('Session not found');
         }
         const { userId: user } = session;
-        return { user };
+        return {
+            user,
+        };
     }
     async deleteSession(sessionId, userId) {
-        const deleteSession = await session_model_1.default.findByIdAndDelete({
+        const deletedSession = await session_model_1.default.findByIdAndDelete({
             _id: sessionId,
             userId: userId,
         });
-        if (!deleteSession) {
+        if (!deletedSession) {
             throw new catch_error_1.NotFoundException('Session not found');
         }
         return;

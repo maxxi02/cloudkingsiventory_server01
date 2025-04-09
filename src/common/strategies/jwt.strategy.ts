@@ -3,7 +3,6 @@ import {
   Strategy as JwtStrategy,
   StrategyOptionsWithRequest,
 } from 'passport-jwt';
-import { ErrorCode } from '../enums/error-code.enum';
 import { config } from '../../config/app.config';
 import passport, { PassportStatic } from 'passport';
 import { userService } from '../../modules/user/user.module';
