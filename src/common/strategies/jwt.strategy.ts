@@ -9,6 +9,7 @@ import { userService } from '../../modules/user/user.module';
 import { UnauthorizedException } from '../utils/catch-error';
 import SessionModel from '../../database/models/session.model';
 import express from 'express';
+import { UserDocuments } from '../../database/models/user.model';
 
 interface JwtPayload {
   userId: string;
@@ -42,21 +43,28 @@ export const setupJwtStrategy = (passport: PassportStatic) => {
     'jwt',
     new JwtStrategy(
       options,
-      async (req: express.Request, payload: JwtPayload, done) => {
+      async (
+        req: express.Request,
+        payload: JwtPayload,
+        done: (error: Error | null, user?: UserDocuments) => void,
+      ) => {
         try {
           const user = await userService.findUserById(payload.userId);
           const session = await SessionModel.findById(payload.sessionId);
           if (!user) {
-            return done(null, false);
+            return done(null, undefined);
           }
           if (!session) {
-            return done(null, false);
+            return done(null, undefined);
           }
           req.sessionId = payload.sessionId;
           req.id = payload.userId;
           return done(null, user);
         } catch (error) {
-          return done(error, false);
+          return done(
+            error instanceof Error ? error : new Error(String(error)),
+            undefined,
+          );
         }
       },
     ),
