@@ -1,4 +1,4 @@
-import { HttpStatusCode, HTTPSTATUS } from '../../config/http.config';
+import { HTTPSTATUS, HttpStatusCode } from '../../config/http.config';
 import { ErrorCode } from '../enums/error-code.enum';
 
 export class AppError extends Error {
@@ -13,6 +13,12 @@ export class AppError extends Error {
     super(message);
     this.statusCode = statusCode;
     this.errorCode = errorCode;
-    Error.captureStackTrace(this, this.constructor);
+
+    // Add type checking for captureStackTrace
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, this.constructor);
+    } else {
+      this.stack = new Error().stack;
+    }
   }
 }
