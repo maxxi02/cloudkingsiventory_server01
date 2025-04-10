@@ -23,12 +23,26 @@ const BASE_PATH = config.BASE_PATH;
 app.use(helmet()); // Optional: add security headers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(
-  cors({
-    origin: config.APP_ORIGIN,
-    credentials: true,
-  }),
-);
+
+const allowedOrigins = [
+  config.APP_ORIGIN, // Local development
+  'https://cloudkingsinventory01.vercel.app', // Production client
+];
+
+const corsOptions: cors.CorsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+};
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Enable preflight for all routes
 
 app.use(cookieParser());
 app.use(passport.initialize());
@@ -40,15 +54,15 @@ app.get(
   }),
 );
 
-// app.get('/test', (req: Request, res: Response) => {
-//   if (req.sessionId) {
-//     res.json({
-//       message: 'Authenticated!',
-//       sessionId: req.sessionId,
-//       user: req.user,
-//     });
-//   }
-// });
+app.get('/test', (req: Request, res: Response) => {
+  if (req.sessionId) {
+    res.json({
+      message: 'Authenticated!',
+      sessionId: req.sessionId,
+      user: req.user,
+    });
+  }
+});
 
 app.use(`${BASE_PATH}/auth`, authRoutes);
 app.use(`${BASE_PATH}/mfa`, mfaRoutes);

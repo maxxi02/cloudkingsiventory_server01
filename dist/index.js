@@ -23,25 +23,40 @@ const BASE_PATH = app_config_1.config.BASE_PATH;
 app.use((0, helmet_1.default)()); // Optional: add security headers
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-app.use((0, cors_1.default)({
-    origin: app_config_1.config.APP_ORIGIN,
+const allowedOrigins = [
+    app_config_1.config.APP_ORIGIN, // Local development
+    'https://cloudkingsinventory01.vercel.app', // Production client
+];
+const corsOptions = {
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        }
+        else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
-}));
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+};
+app.use((0, cors_1.default)(corsOptions));
+app.options('*', (0, cors_1.default)(corsOptions)); // Enable preflight for all routes
 app.use((0, cookie_parser_1.default)());
 app.use(passport_1.default.initialize());
 (0, jwt_strategy_1.setupJwtStrategy)(passport_1.default);
 app.get('/', (0, asyncHandler_1.asyncHandler)(async (req, res, next) => {
     res.status(http_config_1.HTTPSTATUS.OK_BABY).json({ message: 'Hello baby' });
 }));
-// app.get('/test', (req: Request, res: Response) => {
-//   if (req.sessionId) {
-//     res.json({
-//       message: 'Authenticated!',
-//       sessionId: req.sessionId,
-//       user: req.user,
-//     });
-//   }
-// });
+app.get('/test', (req, res) => {
+    if (req.sessionId) {
+        res.json({
+            message: 'Authenticated!',
+            sessionId: req.sessionId,
+            user: req.user,
+        });
+    }
+});
 app.use(`${BASE_PATH}/auth`, auth_routes_1.default);
 app.use(`${BASE_PATH}/mfa`, mfa_routes_1.default);
 app.use(`${BASE_PATH}/session`, jwt_strategy_1.authenticateJWT, session_routes_1.default);
