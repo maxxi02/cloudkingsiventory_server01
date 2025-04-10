@@ -25,22 +25,9 @@ app.use(helmet()); // Optional: add security headers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const allowedOrigins = [
-  'http://localhost:3000', // Local development
-  'https://ckinventory.vercel.app/', // Production client
-];
-
 const corsOptions: cors.CorsOptions = {
-  origin: allowedOrigins,
+  origin: config.APP_ORIGIN,
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: [
-    'Content-Type',
-    'Authorization',
-    'X-Requested-With',
-    'Accept',
-    'Origin',
-  ],
 };
 
 app.use(cors(corsOptions));
