@@ -37,17 +37,17 @@ const setupJwtStrategy = (passport) => {
             const user = await user_module_1.userService.findUserById(payload.userId);
             const session = await session_model_1.default.findById(payload.sessionId);
             if (!user) {
-                return done(null, false);
+                return done(null, undefined);
             }
             if (!session) {
-                return done(null, false);
+                return done(null, undefined);
             }
             req.sessionId = payload.sessionId;
             req.id = payload.userId;
             return done(null, user);
         }
         catch (error) {
-            return done(error, false);
+            return done(error instanceof Error ? error : new Error(String(error)), undefined);
         }
     }));
 };

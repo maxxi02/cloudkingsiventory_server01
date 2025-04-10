@@ -7,7 +7,12 @@ class AppError extends Error {
         super(message);
         this.statusCode = statusCode;
         this.errorCode = errorCode;
-        Error.captureStackTrace(this, this.constructor);
+        if (Error.captureStackTrace) {
+            Error.captureStackTrace(this, this.constructor);
+        }
+        else {
+            this.stack = new Error().stack;
+        }
     }
 }
 exports.AppError = AppError;

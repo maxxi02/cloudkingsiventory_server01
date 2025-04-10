@@ -14,9 +14,8 @@ export class AppError extends Error {
     this.statusCode = statusCode;
     this.errorCode = errorCode;
 
-    // Add type checking for captureStackTrace
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, this.constructor);
+    if ((Error as any).captureStackTrace) {
+      (Error as any).captureStackTrace(this, this.constructor);
     } else {
       this.stack = new Error().stack;
     }
