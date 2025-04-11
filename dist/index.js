@@ -25,7 +25,6 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 const allowedOrigins = [
     'http://localhost:3000', // Local development
-    'https://ckinventory.vercel.app', // Production client
 ];
 const corsOptions = {
     origin: allowedOrigins,

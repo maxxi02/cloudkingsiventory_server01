@@ -88,7 +88,7 @@ class AuthService {
         const refreshToken = (0, jwt_1.signJwtToken)({
             sessionId: session._id,
         }, jwt_1.refreshTokenSignOptions);
-        logger_1.logger.info(`Login successful for user ID: ${user._id} with sessionId of ${session._id}`);
+        logger_1.logger.info(`Login successful for user ID: ${user._id} with sessionId of ${session._id} accessToken:${accessToken} refreshToken:${refreshToken}`);
         return {
             user,
             accessToken,

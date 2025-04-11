@@ -65,19 +65,14 @@ app.use(`${BASE_PATH}/mfa`, mfaRoutes);
 app.use(`${BASE_PATH}/session`, authenticateJWT, sessionRoutes);
 app.use(errorHandler);
 
-if (process.env.NODE_ENV === 'production') {
-  module.exports = app; // Export for Vercel serverless
-} else {
-  // Only start the server in development
-  app.listen(config.PORT, async () => {
-    try {
-      await connectDatabase();
-      console.log(
-        `Server is listening on port ${config.PORT} in ${config.NODE_ENV}`,
-      );
-    } catch (error) {
-      console.error('Database connection failed:', error);
-      process.exit(1); // Exit the process if the database connection fails
-    }
-  });
-}
+app.listen(config.PORT, async () => {
+  try {
+    await connectDatabase();
+    console.log(
+      `Server is listening on port ${config.PORT} in ${config.NODE_ENV}`,
+    );
+  } catch (error) {
+    console.error('Database connection failed:', error);
+    process.exit(1); // Exit the process if the database connection fails
+  }
+});
