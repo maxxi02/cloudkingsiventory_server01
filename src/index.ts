@@ -49,6 +49,7 @@ app.options('*', cors(corsOptions)); // Enable preflight for all routes
 app.use(cookieParser());
 app.use(passport.initialize());
 setupJwtStrategy(passport);
+
 app.get(
   '/',
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -57,13 +58,7 @@ app.get(
 );
 
 app.get('/test', (req: Request, res: Response) => {
-  if (req.sessionId) {
-    res.json({
-      message: 'Authenticated!',
-      sessionId: req.sessionId,
-      user: req.user,
-    });
-  }
+  res.send('Hello baby cakes');
 });
 
 app.use(`${BASE_PATH}/auth`, authRoutes);
