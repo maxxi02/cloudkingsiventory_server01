@@ -139,7 +139,7 @@ export class AuthService {
     );
 
     logger.info(
-      `Login successful for user ID: ${user._id} with sessionId of ${session._id}`,
+      `Login successful for user ID: ${user._id} with sessionId of ${session._id} accessToken:${accessToken} refreshToken:${refreshToken}`,
     );
     return {
       user,
