@@ -14,6 +14,8 @@ const defaults: CookieOptions = {
   httpOnly: true,
   secure: config.NODE_ENV === 'production' ? true : false,
   sameSite: config.NODE_ENV === 'production' ? 'strict' : 'lax',
+  domain:
+    config.NODE_ENV === 'production' ? 'ckinventory.vercel.app' : undefined,
 };
 
 export const getRefreshTokenCookieOptions = (): CookieOptions => {

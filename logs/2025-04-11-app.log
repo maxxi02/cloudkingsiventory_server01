@@ -1,0 +1,8 @@
+2025-04-11 18:28:29 [INFO]: Login attempt for email: m44156529@gmail.com
+2025-04-11 18:28:29 [INFO]: Creating session for user ID: 67ed2f5875e66025c1d36f34
+2025-04-11 18:28:29 [INFO]: Signing tokens for user ID: 67ed2f5875e66025c1d36f34
+2025-04-11 18:28:29 [INFO]: Login successful for user ID: 67ed2f5875e66025c1d36f34 with sessionId of 67f8eecdcc4e0d31a8dd37d8
+2025-04-11 18:54:20 [INFO]: Login attempt for email: m44156529@gmail.com
+2025-04-11 18:54:21 [INFO]: Creating session for user ID: 67ed2f5875e66025c1d36f34
+2025-04-11 18:54:21 [INFO]: Signing tokens for user ID: 67ed2f5875e66025c1d36f34
+2025-04-11 18:54:21 [INFO]: Login successful for user ID: 67ed2f5875e66025c1d36f34 with sessionId of 67f8f4dd930f5fba3e09fc1a
