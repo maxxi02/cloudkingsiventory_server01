@@ -70,4 +70,10 @@ app.listen(app_config_1.config.PORT, async () => {
         process.exit(1); // Exit the process if the database connection fails
     }
 });
-exports.default = app;
+if (process.env.NODE_ENV === 'production') {
+    module.exports = app;
+}
+else {
+    const PORT = process.env.PORT || 7777;
+    app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+}
