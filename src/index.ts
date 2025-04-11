@@ -83,3 +83,5 @@ app.listen(config.PORT, async () => {
     process.exit(1); // Exit the process if the database connection fails
   }
 });
+
+export default app;
