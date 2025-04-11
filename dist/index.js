@@ -48,32 +48,25 @@ app.get('/', (0, asyncHandler_1.asyncHandler)(async (req, res, next) => {
     res.status(http_config_1.HTTPSTATUS.OK_BABY).json({ message: 'Hello baby' });
 }));
 app.get('/test', (req, res) => {
-    if (req.sessionId) {
-        res.json({
-            message: 'Authenticated!',
-            sessionId: req.sessionId,
-            user: req.user,
-        });
-    }
+    res.send('Hello baby cakes');
 });
 app.use(`${BASE_PATH}/auth`, auth_routes_1.default);
 app.use(`${BASE_PATH}/mfa`, mfa_routes_1.default);
 app.use(`${BASE_PATH}/session`, jwt_strategy_1.authenticateJWT, session_routes_1.default);
 app.use(errorHandler_1.default);
-app.listen(app_config_1.config.PORT, async () => {
-    try {
-        await (0, database_1.connectDatabase)();
-        console.log(`Server is listening on port ${app_config_1.config.PORT} in ${app_config_1.config.NODE_ENV}`);
-    }
-    catch (error) {
-        console.error('Database connection failed:', error);
-        process.exit(1); // Exit the process if the database connection fails
-    }
-});
 if (process.env.NODE_ENV === 'production') {
-    module.exports = app;
+    module.exports = app; // Export for Vercel serverless
 }
 else {
-    const PORT = process.env.PORT || 7777;
-    app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+    // Only start the server in development
+    app.listen(app_config_1.config.PORT, async () => {
+        try {
+            await (0, database_1.connectDatabase)();
+            console.log(`Server is listening on port ${app_config_1.config.PORT} in ${app_config_1.config.NODE_ENV}`);
+        }
+        catch (error) {
+            console.error('Database connection failed:', error);
+            process.exit(1); // Exit the process if the database connection fails
+        }
+    });
 }
