@@ -12,11 +12,11 @@ export const REFRESH_PATH = `${config.BASE_PATH}/auth/refresh`;
 
 const defaults: CookieOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
+  secure: process.env.NODE_ENV === 'production', //https
   sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
   domain:
     process.env.NODE_ENV === 'production'
-      ? `${process.env.APP_ORIGIN}`
+      ? `https://ckinventory.vercel.app`
       : 'http://localhost:7777',
   maxAge: 7 * 24 * 60 * 60 * 1000,
 };
