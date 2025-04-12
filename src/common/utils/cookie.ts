@@ -11,9 +11,11 @@ type CookiePayloadType = {
 export const REFRESH_PATH = `${config.BASE_PATH}/auth/refresh`;
 
 const defaults: CookieOptions = {
-  httpOnly: true,
-  secure: config.NODE_ENV === 'production',
-  sameSite: 'none',
+  httpOnly: false,
+  // sameSite: 'none',
+  // secure: config.NODE_ENV === 'production' ? true : false,
+  //sameSite: config.NODE_ENV === "production" ? "strict" : "lax",
+  path: '/',
 };
 
 export const getRefreshTokenCookieOptions = (): CookieOptions => {
@@ -45,25 +47,7 @@ export const setAuthenticationCookies = ({
     .cookie('accessToken', accessToken, getAccessTokenCookieOptions())
     .cookie('refreshToken', refreshToken, getRefreshTokenCookieOptions());
 
-// Updated clearAuthenticationCookies function
-export const clearAuthenticationCookies = (res: Response): Response => {
-  const cookieOptions: CookieOptions = {
-    httpOnly: true,
-    secure: config.NODE_ENV === 'production',
-    sameSite: 'lax' as const,
-    path: '/',
-    maxAge: 15 * 60 * 1000,
-  };
-
-  // Clear accessToken cookie
-  res.clearCookie('accessToken', cookieOptions);
-
-  // Clear refreshToken cookie with its specific path
-  res.clearCookie('refreshToken', {
-    ...cookieOptions,
+export const clearAuthenticationCookies = (res: Response): Response =>
+  res.clearCookie('accessToken').clearCookie('refreshToken', {
     path: REFRESH_PATH,
-    maxAge: 7 * 24 * 60 * 60 * 1000,
   });
-
-  return res;
-};
