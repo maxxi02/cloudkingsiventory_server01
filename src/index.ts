@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const allowedOrigins = [
   'http://localhost:3000', // Local development
-  'https://cloudkingsiventory-server01.onrender.com'
+  'https://ckinventory.vercel.app/',
 ];
 
 const corsOptions: cors.CorsOptions = {
