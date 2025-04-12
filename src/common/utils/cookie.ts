@@ -24,7 +24,7 @@ export const getRefreshTokenCookieOptions = (): CookieOptions => {
   return {
     ...defaults,
     expires,
-    path: REFRESH_PATH,
+    path: '/',
   };
 };
 
@@ -49,5 +49,5 @@ export const setAuthenticationCookies = ({
 
 export const clearAuthenticationCookies = (res: Response): Response =>
   res.clearCookie('accessToken').clearCookie('refreshToken', {
-    path: REFRESH_PATH,
+    path: '/',
   });
