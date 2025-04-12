@@ -147,6 +147,7 @@ export class AuthService {
       refreshToken,
       mfaRequired: false,
       sessionId: session._id,
+      isAuthenticated: true,
     };
   }
 
