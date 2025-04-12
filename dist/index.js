@@ -24,23 +24,24 @@ app.use((0, helmet_1.default)()); // Optional: add security headers
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 const allowedOrigins = [
-    'http://localhost:3000', // Local development
-    'https://cloudkingsiventory-server01.onrender.com'
+    'http://localhost:3000',
+    'https://ckinventory.vercel.app/',
 ];
 const corsOptions = {
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        }
+        else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: [
-        'Content-Type',
-        'Authorization',
-        'X-Requested-With',
-        'Accept',
-        'Origin',
-    ],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
 };
 app.use((0, cors_1.default)(corsOptions));
-app.options('*', (0, cors_1.default)(corsOptions)); // Enable preflight for all routes
+app.options('*', (0, cors_1.default)(corsOptions));
 app.use((0, cookie_parser_1.default)());
 app.use(passport_1.default.initialize());
 (0, jwt_strategy_1.setupJwtStrategy)(passport_1.default);
