@@ -12,9 +12,6 @@ export const REFRESH_PATH = `${config.BASE_PATH}/auth/refresh`;
 
 const defaults: CookieOptions = {
   httpOnly: false,
-  // sameSite: 'none',
-  // secure: config.NODE_ENV === 'production' ? true : false,
-  //sameSite: config.NODE_ENV === "production" ? "strict" : "lax",
   path: '/',
 };
 
