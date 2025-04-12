@@ -13,7 +13,8 @@ export const REFRESH_PATH = `${config.BASE_PATH}/auth/refresh`;
 const defaults: CookieOptions = {
   httpOnly: true,
   secure: config.NODE_ENV === 'production' ? true : false,
-  sameSite: config.NODE_ENV === 'production' ? 'strict' : 'lax',
+  sameSite: 'none',
+  domain: 'cloudkingsiventory-server01.onrender.com',
 };
 
 export const getRefreshTokenCookieOptions = (): CookieOptions => {

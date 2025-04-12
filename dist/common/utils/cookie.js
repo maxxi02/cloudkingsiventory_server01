@@ -7,7 +7,8 @@ exports.REFRESH_PATH = `${app_config_1.config.BASE_PATH}/auth/refresh`;
 const defaults = {
     httpOnly: true,
     secure: app_config_1.config.NODE_ENV === 'production' ? true : false,
-    sameSite: app_config_1.config.NODE_ENV === 'production' ? 'strict' : 'lax',
+    sameSite: 'none',
+    domain: 'cloudkingsiventory-server01.onrender.com',
 };
 const getRefreshTokenCookieOptions = () => {
     const expiresIn = app_config_1.config.JWT.REFRESH_EXPIRES_IN;

@@ -27,6 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const allowedOrigins = [
   'http://localhost:3000', // Local development
+  'https://cloudkingsiventory-server01.onrender.com'
 ];
 
 const corsOptions: cors.CorsOptions = {

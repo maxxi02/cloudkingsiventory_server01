@@ -25,6 +25,7 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 const allowedOrigins = [
     'http://localhost:3000', // Local development
+    'https://cloudkingsiventory-server01.onrender.com'
 ];
 const corsOptions = {
     origin: allowedOrigins,
@@ -53,19 +54,13 @@ app.use(`${BASE_PATH}/auth`, auth_routes_1.default);
 app.use(`${BASE_PATH}/mfa`, mfa_routes_1.default);
 app.use(`${BASE_PATH}/session`, jwt_strategy_1.authenticateJWT, session_routes_1.default);
 app.use(errorHandler_1.default);
-if (process.env.NODE_ENV === 'production') {
-    module.exports = app; // Export for Vercel serverless
-}
-else {
-    // Only start the server in development
-    app.listen(app_config_1.config.PORT, async () => {
-        try {
-            await (0, database_1.connectDatabase)();
-            console.log(`Server is listening on port ${app_config_1.config.PORT} in ${app_config_1.config.NODE_ENV}`);
-        }
-        catch (error) {
-            console.error('Database connection failed:', error);
-            process.exit(1); // Exit the process if the database connection fails
-        }
-    });
-}
+app.listen(app_config_1.config.PORT, async () => {
+    try {
+        await (0, database_1.connectDatabase)();
+        console.log(`Server is listening on port ${app_config_1.config.PORT} in ${app_config_1.config.NODE_ENV}`);
+    }
+    catch (error) {
+        console.error('Database connection failed:', error);
+        process.exit(1); // Exit the process if the database connection fails
+    }
+});
