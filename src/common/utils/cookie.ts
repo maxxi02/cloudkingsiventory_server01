@@ -17,7 +17,7 @@ const defaults: CookieOptions = {
   domain:
     process.env.NODE_ENV === 'production'
       ? `${process.env.APP_ORIGIN}`
-      : undefined,
+      : 'http://localhost:7777',
   maxAge: 7 * 24 * 60 * 60 * 1000,
 };
 
