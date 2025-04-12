@@ -5,10 +5,14 @@ const app_config_1 = require("../../config/app.config");
 const date_time_1 = require("./date-time");
 exports.REFRESH_PATH = `${app_config_1.config.BASE_PATH}/auth/refresh`;
 const defaults = {
+    path: '/',
     httpOnly: true,
-    secure: app_config_1.config.NODE_ENV === 'production' ? true : false,
-    sameSite: 'none',
-    domain: 'cloudkingsiventory-server01.onrender.com',
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    domain: process.env.NODE_ENV === 'production'
+        ? `${process.env.APP_ORIGIN}`
+        : undefined,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
 };
 const getRefreshTokenCookieOptions = () => {
     const expiresIn = app_config_1.config.JWT.REFRESH_EXPIRES_IN;
@@ -34,23 +38,7 @@ const setAuthenticationCookies = ({ res, accessToken, refreshToken, }) => res
     .cookie('accessToken', accessToken, (0, exports.getAccessTokenCookieOptions)())
     .cookie('refreshToken', refreshToken, (0, exports.getRefreshTokenCookieOptions)());
 exports.setAuthenticationCookies = setAuthenticationCookies;
-// Updated clearAuthenticationCookies function
-const clearAuthenticationCookies = (res) => {
-    const cookieOptions = {
-        httpOnly: true,
-        secure: app_config_1.config.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/',
-        maxAge: 15 * 60 * 1000,
-    };
-    // Clear accessToken cookie
-    res.clearCookie('accessToken', cookieOptions);
-    // Clear refreshToken cookie with its specific path
-    res.clearCookie('refreshToken', {
-        ...cookieOptions,
-        path: exports.REFRESH_PATH,
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
-    return res;
-};
+const clearAuthenticationCookies = (res) => res.clearCookie('accessToken').clearCookie('refreshToken', {
+    path: exports.REFRESH_PATH,
+});
 exports.clearAuthenticationCookies = clearAuthenticationCookies;
