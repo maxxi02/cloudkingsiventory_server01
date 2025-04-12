@@ -11,11 +11,9 @@ type CookiePayloadType = {
 export const REFRESH_PATH = `${config.BASE_PATH}/auth/refresh`;
 
 const defaults: CookieOptions = {
-  path: '/',
-  httpOnly: false,
-  secure: process.env.NODE_ENV === 'production', // true in production
-  sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-  maxAge: 7 * 24 * 60 * 60 * 1000, // example: 7 days
+  httpOnly: true,
+  secure: config.NODE_ENV === 'production' ? true : false,
+  sameSite: config.NODE_ENV === 'production' ? 'strict' : 'lax',
 };
 
 export const getRefreshTokenCookieOptions = (): CookieOptions => {
@@ -24,7 +22,7 @@ export const getRefreshTokenCookieOptions = (): CookieOptions => {
   return {
     ...defaults,
     expires,
-    path: '/',
+    path: REFRESH_PATH,
   };
 };
 
@@ -49,5 +47,5 @@ export const setAuthenticationCookies = ({
 
 export const clearAuthenticationCookies = (res: Response): Response =>
   res.clearCookie('accessToken').clearCookie('refreshToken', {
-    path: '/',
+    path: REFRESH_PATH,
   });
